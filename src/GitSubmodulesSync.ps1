@@ -49,7 +49,12 @@ Invoke-Git "submodule update --remote --merge"
 
 # --- Step 4: Detect Dirty Submodules ---
 Write-Host "`n📌 Checking for dirty submodules..." -ForegroundColor Cyan
-$dirtyModules = Invoke-Git "submodule foreach --quiet 'git diff --quiet || echo \"\$name is dirty\"'"
+$dirtyModules = git submodule foreach {
+    git diff --quiet
+    if (-not $?) {
+        Write-Output "$name is dirty"
+    }
+}
 
 if ($dirtyModules -and $dirtyModules.Count -gt 0) {
     Write-Host "`n⚠️ Dirty submodules detected:" -ForegroundColor Red
