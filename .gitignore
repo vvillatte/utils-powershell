@@ -1,0 +1,6 @@
+# Folders
+data
+logs
+
+# Local Environment Variables
+config.json
